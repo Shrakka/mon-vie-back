@@ -1,0 +1,17 @@
+{
+  "name": "mon-vie-back",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "git@github.com:Shrakka/mon-vie-back.git",
+  "author": "Enzo <enzotesta@hotmail.fr>",
+  "license": "MIT",
+  "scripts": {
+    "dev": "nodemon index.js"
+  },
+  "dependencies": {
+    "axios": "^0.21.1",
+    "express": "^4.17.1",
+    "node": "^15.12.0",
+    "nodemon": "^2.0.7"
+  }
+}
