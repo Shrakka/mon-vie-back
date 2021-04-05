@@ -6,6 +6,7 @@
   "author": "Enzo <enzotesta@hotmail.fr>",
   "license": "MIT",
   "scripts": {
+    "start": "node app.js",
     "dev": "nodemon index.js"
   },
   "engines": {
@@ -14,7 +15,6 @@
   "dependencies": {
     "axios": "^0.21.1",
     "express": "^4.17.1",
-    "node": "^15.12.0",
     "nodemon": "^2.0.7"
   }
 }
