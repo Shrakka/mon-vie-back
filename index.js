@@ -13,13 +13,13 @@ app.get('/', (_, res) => {
 app.get('/offers', async (_, res) => {
     const url = "https://civiweb-api-offre-prd.azurewebsites.net/api/Offers/search";
     const body = buildBody();
-    const data = await axios({
+    const httpResponse = await axios({
         method: "post",
         url,
         data: body,
         headers: { "Content-Type": "application/json" }
     });
-    res.send(data.data);
+    res.send(formatOffers(httpResponse.data));
 });
 
 app.listen(port, () => {
@@ -44,4 +44,37 @@ function buildBody() {
         "skip":0,
         "limit":0
     });
+}
+
+function formatOffers(rawOffers) {
+    return {
+        count: rawOffers.count,
+        results: buildResults()
+    };
+
+    function buildResults() {
+        return rawOffers.result
+            .filter(offer => offer.missionType === "VIE")
+            .map(offer => ({
+                id: offer.id,
+                company: offer.organizationName,
+                title: offer.missionTitle,
+                category: offer.activitySectorN1,
+                keywords: (offer.specializations || []).map(spe => spe.specializationLabelEn),
+                duration: offer.missionDuration,
+                viewCounter: offer.viewCounter,
+                candidateCounter: offer.candidateCounter,
+                location: {
+                    country: offer.countryNameEn,
+                    city: offer.cityNameEn
+                },
+                creationDate: offer.creationDate,
+                missionDates: {
+                    startDate: offer.missionStartDate,
+                    endDate: offer.missionEndDate 
+                },
+                link: `https://mon-vie-via.businessfrance.fr/offres/${offer.id}`
+            }))
+            .sort((offerA, offerB) => (new Date(offerB.creationDate)).getTime() - (new Date(offerA.creationDate)).getTime());
+    }
 }
